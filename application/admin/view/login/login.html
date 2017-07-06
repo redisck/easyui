@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="edge" />
+<link rel="shortcut icon" href="/favicon.ico" />
+
+<title>后台登陆</title>
+<link href="__STATIC__/themes/insdep/easyui.css" rel="stylesheet" type="text/css">
+
+<link href="__STATIC__/themes/insdep/easyui_animation.css" rel="stylesheet" type="text/css">
+
+<link href="__STATIC__/themes/insdep/easyui_plus.css" rel="stylesheet" type="text/css">
+
+<link href="__STATIC__/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
+
+<link href="__STATIC__/themes/insdep/icon.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="__STATIC__/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="__STATIC__/themes/insdep/jquery.insdep-extend.min.js"></script>
+</head>
+
+<body class="theme-login-layout">
+
+
+		<div class="theme-login-header"></div>
+		<div id="theme-login-form">
+
+            <form id="form" class="theme-login-form" method="post">
+            	<dl>
+                	<dt><img src="__STATIC__/images/logo_110.png"></dt>
+					{:token()}
+					<dd><input id="username" name="username" class="theme-login-text"  style="width:100%;"/></dd>
+					<dd><input id="password" name="password" class="theme-login-text"  style="width:100%;"/></dd>
+					<dd><input id="code" name="code" class="theme-login-text"  style="width:100%;"/></dd>
+					<dd><img src="{:url('api/common/code',['num'=>4,'w'=>200,'h'=>50,'f'=>40])}" id="codeImg" onclick="changeCode()" style="cursor: pointer;" /></dd>
+					<dd>
+						<a class="easyui-linkbutton button-blue l-btn l-btn-small" id="submit" style="width:100%;">登陆</a>
+					</dd>
+            	</dl>
+            </form>
+        </div>
+		<div class="theme-login-footer">
+			<dl>
+				<dd>© 2017 - <script>var year = new Date();document.write(year.getFullYear());</script> 式神 (289650682@qq.com,vashimang@gmail.com) .版权所有</dd>
+			</dl>
+		</div>
+    <script>
+
+    	$(function(){
+			$.extend($.fn.validatebox.defaults.tipOptions, {
+				onShow: function() {
+					$(this).tooltip("tip").css({backgroundColor:"#ff7e00", border: "none",color: "#fff"});
+				}
+			})
+
+			/*布局部分*/
+			$('#theme-login-layout').layout({
+				fit:true/*布局框架全屏*/
+			});
+
+
+			$('#username').textbox({
+				prompt:'用户名',
+				required:true,
+				missingMessage:"请输入用户名"
+			});
+			$('#password').textbox({
+				type:"password",
+				prompt:'password',
+				required:true,
+				//validType:['length[6,20]'],
+				missingMessage:"请输入密码"
+			});
+			$('#code').textbox({
+				prompt:'验证码',
+				required:true,
+				missingMessage:"请输入验证码"
+			});
+
+			$('#submit').click(function(){
+				login();
+			});
+			$("body").bind('keyup',function(event) {
+				if(event.keyCode==13){
+					login();
+				}
+			});
+		});
+
+
+		function login(){
+			$("#form").form('submit',{
+				url:"{:url('admin/login/login')}",
+				onSubmit:function(){
+					var isValid = $(this).form('validate');
+					isValid?$.messager.progress():"";
+					return isValid;
+				},
+				success:function(data){
+					$.messager.progress('close');
+					try
+					{
+						var data= $.parseJSON(data);
+						if(data.status==200){
+							window.location.href="{:url('admin/index/index')}";
+						}else{
+							$.messager.alert('提示',data.message,'error',function(){
+								$('#password,#code').textbox('clear');
+								$('#password').next('span').find('input').focus();
+								$('input[name=__token__]').val(data.token);
+								changeCode();
+							});
+						}
+					}
+					catch (e)
+					{
+						$.messager.alert('提示', '网络连接错误,请重试!', 'warning');
+					}
+				}
+			})
+		}
+
+		function changeCode(){
+			var that=$("#codeImg");
+			var imgUrl="{:url('api/common/code',['num'=>4,'w'=>200,'h'=>50,'f'=>40])}"+"?time="+Math.random();
+			that.attr('src',imgUrl);
+		}
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<form id="form-add" method="post" class="luck-from">
+    <div class="group-label">
+        <span class="luck-block">配置分组：</span>
+        {foreach name="config_group" item="v" key="k"}
+            <input type="radio" name="group" id="c_{$k}" class="luck_check" value="system" {if condition="$k eq 'system'"}checked{/if}><label for="c_{$k}" class="luck_label" >{$v}</label>
+        {/foreach}
+    </div>
+    <div class="group-label">
+        <span class="luck-block">配置类型：</span>
+        <select id="cc" class="easyui-combobox f80" name="type" data-options="editable:false">
+            {foreach name="form_item_type" item="v" key="k"}
+            <option value="{$k}">{$v}</option>
+            {/foreach}
+        </select>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">配置标题：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox f80" name="title" data-options="required:'true'">
+    </div>
+    <div class="group-label">
+        <div class="font-grey luck_tips">
+            一般由中文组成，仅用于显示
+        </div>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">配置名称：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox f80" name="name" data-options="required:'true'">
+    </div>
+    <div class="group-label">
+        <div class="font-grey luck_tips">
+            由英文字母和下划线组成，如 web_site_title，调用方法：config('web_site_title')
+        </div>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">配置值：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox f80" data-options="multiline:true,height:'100px'" name="value">
+    </div>
+    <div class="group-label">
+        <div class="font-grey luck_tips">
+            该配置的具体内容
+        </div>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">配置项：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox f80" data-options="multiline:true,height:'100px'" name="options">
+    </div>
+    <div class="group-label">
+        <div class="font-grey luck_tips">
+            用于单选、多选、下拉、联动等类型
+        </div>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">配置说明：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox f80" name="tips">
+    </div>
+    <div class="group-label">
+        <div class="font-grey luck_tips">
+            该配置的具体说明
+        </div>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">排序：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox f80" name="sort" value="100">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">是否启用：</span>
+        <input class='easyui-switchbutton' name="status" data-options="onText:'开启',offText:'禁用',value:'1'" checked>
+    </div>
+</form>
+
+
+<script>
+    $(function(){
+        $('input.luck_check').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    })
+    //id:$data['id'],
+</script>
+
+

@@ -1,0 +1,29 @@
+<form id="form-edit" method="post" class="luck-from">
+    <input type="hidden" name="id" value="{$data['id']}">
+    <input type="hidden" name="title" value="{$data['title']}">
+    <input type="hidden" name="status" value="{$data['status']}">
+    <input type="hidden" name="rules" value="{$data['rules']}">
+    <div id="group-rule">
+
+    </div>
+</form>
+
+<script>
+    $("#group-rule").tree({
+        url:"{:url('admin/group/rule')}",
+        lines:true,
+        checkOnSelect:true,
+        queryParams: {
+            id:{$data['id']},
+        },
+        checkbox:true,
+        onClick: function(node){
+            console.log( node.target);
+            if(node.checkState!="unchecked"){
+                $('#group-rule').tree('uncheck', node.target);
+            }else{
+                $('#group-rule').tree('check', node.target);
+            }
+        }
+    });
+</script>

@@ -1,0 +1,234 @@
+<table id="dg-{$vid}" style="height:100%;width: 100%;">
+    <thead>
+    <tr>
+        <th data-options="field:'ck',checkbox:true"></th>
+        <th data-options="field:'id',sortable:true">ID</th>
+        <th data-options="field:'name',sortable:true">名称</th>
+        <th data-options="field:'title',align:'left',width:100">标题</th>
+        <th data-options="field:'type_name'">类型</th>
+        <th data-options="field:'group_name'">所属分组</th>
+        <th data-options="field:'status',align:'center',formatter:luck.datagrid_status">状态</th>
+        <th data-options="field:'operate',align:'center',formatter:rowoperate">操作</th>
+    </tr>
+    </thead>
+</table>
+
+<div id="tb-{$vid}">
+    <table cellpadding="0" cellspacing="0" style="width:100%">
+        <tr class="clearfix">
+            <td class="luck-tool-button luck-left">
+                <a href="#" class="easyui-linkbutton button-blue" plain="true" onclick="{$vid}_tool.add();"><i class="fa fa-plus fa-lg"></i> 添加</a>
+                <a href="#" class="easyui-linkbutton button-teal" plain="true" onclick="{$vid}_tool.edit();"><i class="fa fa-edit fa-lg"></i> 修改</a>
+                <a href="#" class="easyui-linkbutton button-red" plain="true" onclick="{$vid}_tool.remove();"><i class="fa fa-close fa-lg"></i> 删除</a>
+            </td>
+            <td class="luck-tool-button luck-left">
+                <div class="datagrid-btn-separator"></div>
+            </td>
+            <td class="luck-tool-button luck-left">
+                <a href="#" class="easyui-linkbutton button-black" plain="true" onclick="{$vid}_tool.refresh();"><i class="fa fa-refresh fa-lg"></i> 刷新</a>
+            </td>
+            <td class="luck-tool-button luck-text-right luck-right">
+                分组：
+                <select id="cc" class="easyui-combobox" name="group" data-options="editable:false" style="width:100px;">
+                    <option value="">全部</option>
+                    {foreach name="config_group" item="v" key="k"}
+                    <option value="{$k}">{$v}</option>
+                    {/foreach}
+                </select>
+                名称: <input class="easyui-textbox" name="name" style="width:200px">
+                <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="{$vid}_tool.search();">Search</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    var dg_{$vid}=$('#dg-{$vid}');
+    $(function(){
+        dg_{$vid}.datagrid({
+            url:"{:url('admin/config/index')}",
+            method:'post',
+            idField:'id',
+            nowrap:'false',
+            fitColumns:true,
+            rownumbers:true,
+            sortName:'id',	//选择字段排序
+            sortOrder:'asc',	//默认排序的方式 asc/desc
+            pagination:true,	//开启分页
+            pageSize:PAGE_SIZE,	//默认分页数
+            pageList:PAGE_LIST,	//分页模式
+            selectOnCheck:true,
+            checkOnSelect:true,	//点击行选中
+            singleSelect:false,	//多选
+            loadMsg:'加载中...',
+            striped:true,	//添加斑马线
+            toolbar: '#tb-{$vid}',
+            emptyMsg:'<span class="font-pink">没有记录</span>',
+        });
+
+    });
+    function rowoperate(val,row,index){
+        return '<a href="#" class="easyui-linkbutton button-teal luck-row-small" plain="true" onclick="{$vid}_tool.edit('+row.id+');"><i class="fa fa-edit fa-lg"></i> 修改</a> ' +
+                '<a href="#" class="easyui-linkbutton button-red luck-row-small" plain="true" onclick="{$vid}_tool.remove('+row.id+');"><i class="fa fa-close fa-lg"></i> 删除</a>';
+    }
+    var {$vid}_tool={
+        add:function(){
+            $('#add-dialog').dialog({
+                title: '添加{$vname}',
+                width:500,
+                height:350,
+                closed: false,
+                cache: false,
+                cls:'theme-panel-deepblue luck-dialog-buttons',
+                modal: true,
+                href:"{:url('admin/config/add')}",
+                buttons:[{
+                    cls:'easyui-linkbutton button-blue',
+                    iconCls:'fa fa-check fa-lg',
+                    text:'保存',
+                    handler:function(){
+                        {$vid}_tool.add_save();
+                    }
+                },{
+                    iconCls:'fa fa-close fa-lg',
+                    text:'关闭',
+                    handler:function(){
+                        luck.closeDialog();
+                    }
+                }],
+                fit: true,
+                onBeforeOpen:function(){
+                    $('#add-dialog').window('resize',{left:0,top:0});
+                }
+            });
+            //清除关闭数据没清空问题
+            $("#form-add").form('clear');
+        },
+        edit:function(id){
+            if(id){
+                {$vid}_tool.clearselect();
+            }
+            var rows=dg_{$vid}.datagrid('getSelections');
+            if(rows.length==1 || id){
+                $('#add-dialog').dialog({
+                    title: '修改{$vname}',
+                    width:500,
+                    height:350,
+                    closed: false,
+                    cache: false,
+                    cls:'theme-panel-deepblue luck-dialog-buttons',
+                    modal: true,
+                    href:"{:url('admin/config/edit')}",
+                    queryParams: {
+                        id:id?id:rows[0].id,
+                    },
+                    buttons:[{
+                        cls:'easyui-linkbutton button-blue',
+                        iconCls:'fa fa-check fa-lg',
+                        text:'保存',
+                        handler:function(){
+                            {$vid}_tool.edit_save();
+                        }
+                    },{
+                        iconCls:'fa fa-close fa-lg',
+                        text:'关闭',
+                        handler:function(){
+                            luck.closeDialog();
+                        }
+                    }],
+                    fit: true,
+                    onBeforeOpen:function(){
+                        $('#add-dialog').window('resize',{left:0,top:0});
+                    }
+                });
+            }else{
+                $.messager.alert('警告', '编辑数据需要操作一条,且最多只能操作一条!!', 'warning');
+            }
+        },
+        remove:function(id){
+            if(id){
+                {$vid}_tool.clearselect();
+            }
+            var rows=dg_{$vid}.datagrid('getSelections');
+            if(rows.length>0 || id){
+                var ids=[];
+                var confirmmsg='您要删除所选的记录吗？';
+                if(id){
+                    ids.push(id);
+                    confirmmsg='您要删除这一条记录吗？';
+                }else{
+                    for(var i=0;i<rows.length;i++){
+                        ids.push(rows[i].id);
+                    }
+                }
+
+                $.messager.confirm('确定操作', confirmmsg, function (flag) {
+                    if(flag){
+
+                        $.ajax({
+                            type:"post",
+                            url:'{:url("admin/config/remove")}',
+                            data:{
+                                id:ids,
+                            },
+                            beforeSend : function () {
+                                dg_{$vid}.datagrid('loading');
+                            },
+                            success : function (data, response, status) {
+                                luck.success2(data,dg_{$vid});
+                            },
+                            complete:function(){
+                                dg_{$vid}.datagrid('loaded');
+                            },
+                            error : function(){
+
+                            }
+                        });
+                    }
+                });
+            }else{
+                $.messager.alert('警告', '删除数据需要操作至少一条!!', 'warning');
+            }
+        },
+        refresh:function(){
+            dg_{$vid}.datagrid('reload');
+            dg_{$vid}.datagrid('clearSelections');
+            //dg.datagrid('load');
+        },
+        add_save:function(){
+            $("#form-add").form('submit',{
+                url:"{:url('admin/config/add')}",
+                onSubmit:function(){
+                    var isValid = $(this).form('validate');
+                    isValid?$.messager.progress():"";
+                    return isValid;
+                },
+                success:function(data){
+                    luck.success(data,dg_{$vid});
+                }
+            })
+        },
+        edit_save:function(){
+            $("#form-add").form('submit',{
+                url:"{:url('admin/config/edit')}",
+                onSubmit:function(){
+                    var isValid = $(this).form('validate');
+                    isValid?$.messager.progress():"";
+                    return isValid;
+                },
+                success:function(data){
+                    luck.success(data,dg_{$vid});
+                }
+            })
+        },
+        search:function(){
+            dg_{$vid}.datagrid('load',{
+                'search_name': $('input[name=name]').val(),
+                'search_group': $('input[name=group]').val(),
+            });
+        },
+        clearselect:function(){
+            dg_{$vid}.datagrid('clearSelections');
+        }
+    }
+</script>

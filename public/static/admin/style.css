@@ -1,0 +1,108 @@
+.theme-left-layout .theme-left-normal .datalist .datagrid-cell{
+    padding:0;
+}
+.theme-left-layout .theme-left-minimal .datalist .datagrid-cell{
+    padding:0;
+}
+.theme-left-layout .theme-left-normal .datalist .datagrid-cell a{
+    display: block;
+    padding:8px 15px 8px 30px;
+    color:#878787;
+}
+.theme-left-layout .theme-left-minimal .datalist .datagrid-cell a{
+    display: block;
+    padding:10px 15px;
+    color:#878787;
+}
+.theme-left-layout .theme-left-normal .datalist .datagrid-row-checked .datagrid-cell a,
+.theme-left-layout .theme-left-minimal .datalist .datagrid-row-checked .datagrid-cell a{color:#ffffff;}
+.theme-left-layout .theme-left-minimal .datalist .datagrid-cell a.lc_list{color:#fff;}
+.clearfix:after{content:"."; display:block; height:0; clear:both;visibility:hidden;}
+*html .clearfix{ height:1%;}
+*+html .clearfix{ height:1%;}
+
+.luck-text-right{text-align: right;}
+.luck-text-left{text-align: left;}
+.luck-left{float:left;}
+.luck-right{float:right;}
+
+.luck-from{padding:20px; padding-bottom:0;}
+.luck-from .group-label{margin-bottom:10px;width:100%;}
+.luck-tool-search{padding:10px 5px;height:auto;border-bottom:1px dotted #ccc;}
+.luck-tool-button{padding:10px 10px 0;}
+.luck-tool-button:first-child{padding-left: 0;}
+
+.luck-dialog-buttons .dialog-button a:first-child{
+	background-color: #0c80d7 !important;color: #fff !important;border: none !important;}
+.luck-dialog-buttons .dialog-button a:first-child:hover{ background-color:#1678c2 !important;}
+
+.luck-row{width:100%;}
+.luck-row:after{content:"."; display:block; height:0; clear:both;visibility:hidden;}
+*html .luck-row{ height:1%;}
+*+html .luck-row{ height:1%;}
+.luck-col-1,.luck-col-2,.luck-col-3,.luck-col-4,.luck-col-5,.luck-col-6,.luck-col-7,.luck-col-8,.luck-col-9,.luck-col-10,.luck-col-11,.luck-col-12{
+	float: left;display: inline-block;
+}
+.luck-col-1{width:8.33333%;}
+.luck-col-2{width:16.66666%;}
+.luck-col-3{width:25%;}
+.luck-col-4{width:33.33333%;}
+.luck-col-5{width:41.66666%;}
+.luck-col-6{width:50%;}
+.luck-col-7{width:58.33333%;}
+.luck-col-8{width:66.66666%;}
+.luck-col-9{width:75%;}
+.luck-col-10{width:83.33333%;}
+.luck-col-11{width:91.66666%;}
+.luck-col-12{width:100%;}
+
+.luck-block{display: inline-block;}
+.luck-from .luck-block{line-height: 32px;width:80px; text-align: right;}
+.w350{width: 350px;}
+.w250{width:250px;}
+.w150{width:150px;}
+.f100{width:80%;width:calc(100% - 140px); width:-webkit-calc(100% - 140px); width: calc(100% - 140px);}
+.f80{width:70%;width:calc(90% - 140px); width:-webkit-calc(90% - 140px); width: calc(90% - 140px);}
+
+.theme-navigate-button.l-btn-plain,.theme-navigate-button.l-btn-plain:hover{background:#1b8cf2;}
+.theme-navigate-button.l-btn-plain:hover,.theme-navigate-button.m-btn-plain-active{background:#339cfb;}
+.theme-navigate-button .l-btn-text{color:#FFF;}
+
+#chose-file{padding:15px;}
+a.luck-a-blue{color:#0c80d7;}
+.luck-avatar{border-radius:100%;}
+.luck-row-small{padding:3px 5px !important;}
+
+.luck-upbox{width:150px;position: relative;overflow:hidden;}
+.luck-upbox img{width:100%;}
+.luck-closeupload{height: 20px;background-color:rgba(0,0,0,0.5);width:150px;position: absolute;left:0;top:-20px;line-height: 20px;font-size: 14px; text-align: right;color:#fff;transition: all 0.5s;}
+.luck-closeupload i{cursor: pointer;margin-right: 5px;}
+.luck-upbox:hover .luck-closeupload{top:0px;}
+.luck-pd5{padding: 0 5px;}
+
+.theme-tab-white-block .tabs li.tabs-selected a.tabs-inner,#form-sys .theme-tab-blue-block .tabs li.tabs-selected a.tabs-inner{
+    background-color: #1b8cf2;
+    color:#fff;
+}
+.system_tabs{padding:20px;background-color: #f8f8f8;display: block;}
+.system_button{padding-top:15px;}
+#form-sys .theme-tab-blue-block .tabs,
+.theme-tab-line-bold.theme-tab-black-block .theme-tab-white-block .tabs{border-bottom:none;}
+#form-sys .theme-tab-blue-block .tabs-header,
+.theme-tab-white-block .tabs-header,
+#form-sys .theme-tab-blue-block .tabs-panels,
+.theme-tab-white-block .tabs-panels,
+#form-sys .theme-tab-blue-block .tabs-panels{border-width:1px;border-color: #c5c5c5;}
+.theme-tab-white-block .tabs-header,
+#form-sys .theme-tab-blue-block .tabs-header{border-bottom-width: 0;padding-top: 4px;}
+.theme-tab-white-block .tabs-panels .panel-body,
+#form-sys .theme-tab-blue-block .panel-body,.luck-from .theme-tab-blue-block .panel-body{padding:15px;}
+
+.luck_label{padding:0 20px 0 5px;cursor: pointer;font-size: 14px;}
+.luck_tips{padding-left: 80px;}
+
+/*Bulider样式*/
+#form-sys .tabs{width:auto;}
+#form-sys.luck-from .luck-block{width:120px;}
+.luck-from .font-orange{padding-left: 80px;}
+#form-sys.luck-from .font-orange{padding-left: 120px;}

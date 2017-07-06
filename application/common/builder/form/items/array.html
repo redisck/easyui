@@ -1,0 +1,11 @@
+<div class="luck-col-12">
+    <div class="group-label {$form[type].extra_class|default=''}">
+        <span class="luck-block">{$form[type].title|htmlspecialchars}：</span>
+        <textarea class="easyui-validatebox easyui-textbox" style="width:70%" multiline="true" data-options="{notempty name='form[type].group'}validType:[{volist name='form[type].group' id='v' key='k'}'{$v}'{if condition='$k neq count($form[type].group)'},{/if}{/volist}],{/notempty}height:'{$form[type].extra_attr|default='100px'}'" name="{$form[type].name}">{$form[type].value|default=''}</textarea>
+    </div>
+    {notempty name="form[type].tips"}
+    <div class="group-label">
+        <div class="font-orange">提示：{$form[type].tips}</div>
+    </div>
+    {/notempty}
+</div>

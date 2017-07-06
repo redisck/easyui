@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="edge" />
+    <title>后台模板1</title>
+
+    <link href="__STATIC__/themes/insdep/easyui.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/themes/insdep/easyui_animation.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/themes/insdep/easyui_plus.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/themes/insdep/icon.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/plugin/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/style.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="__STATIC__/jquery.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/themes/insdep/jquery.insdep-extend.min.js"></script>
+
+    <!--单选多选使用的插件-->
+    <link href="__STATIC__/plugin/icheck-1.x/skins/all.css?v=1.0.2" rel="stylesheet">
+    <script src="__STATIC__/plugin/icheck-1.x/icheck.min.js"></script>
+
+</head>
+<body>
+<div id="master-layout">
+    <!--开始头部-->
+    <div data-options="region:'north',border:false,bodyCls:'theme-header-layout'">
+        <div class="theme-navigate">
+            <div class="left">
+                {volist name="topmenu" id="v" key="k"}
+                <a href="#" class="easyui-menubutton {if condition='$k eq 1'}theme-navigate-button{/if}" data-bind="menu" data-id="{$v.id}" data-title="{$v.title}" data-options="hasDownArrow:false">{$v.title}</a>
+                {/volist}
+            </div>
+            <div class="right">
+                <a href="#" class="easyui-menubutton theme-navigate-user-button" data-options="menu:'.theme-navigate-user-panel'">{$admin['nickname']}</a>
+                <!--<a href="#" class="easyui-menubutton" data-options="menu:'#mm1',hasDownArrow:false">消息<span class="badge color-default">15</span></a>
+
+                <div id="mm1" class="theme-navigate-menu-panel" style="width:180px;">
+                    <div>产品消息<span class="badge color-success">5</span></div>
+                    <div>安全消息<span class="badge color-important">10</span></div>
+                    <div>服务消息</div>
+                    <div class="menu-sep"></div>
+                    <div>查看历史消息</div>
+                    <div class="menu-sep"></div>
+                    <div>清除消息提示</div>
+                </div>-->
+
+
+                <div class="theme-navigate-user-panel">
+                    <dl>
+                        <dd>
+                            <img src="{$admin['head_img']? $admin['head_img'] : '__STATIC__/images/portrait86x86.png'}" width="86" height="86">
+                            <b class="badge-prompt">{$admin['nickname']}<!--<i class="badge color-important">10</i>--></b>
+                            <span>{$admin['username']}</span>
+                            <span>{$admin['email']}</span>
+                            <p>安全等级：<i class="text-success">高</i></p>
+                        </dd>
+                        <dt>
+                            <a class="theme-navigate-user-modify">修改密码</a>
+                            <a class="theme-navigate-user-logout">注销</a>
+                        </dt>
+                    </dl>
+                </div>
+
+                <input class="easyui-searchbox theme-navigate-search" data-options="prompt:'输入搜索的关键词..',menu:'#mm',searcher:doSearch" style="width:300px" />
+                <a href="#" class="easyui-menubutton theme-navigate-more-button" data-options="menu:'#more',hasDownArrow:false"></a>
+                <div id="more" class="theme-navigate-more-panel">
+                    <div>联系我们</div>
+                    <div onclick="luck.addPanel('tabs_32','清除缓存','{:url('admin/index/clearCache')}')">清除缓存</div>
+                    <div>检测更新</div>
+                    <div>关于</div>
+                </div>
+                <div id="mm" class="theme-navigate-menu-panel">
+                    <div data-options="name:'all'">全部内容</div>
+                    <div data-options="name:'sports'">标题</div>
+                    <div data-options="name:'sports'">作者</div>
+                    <div data-options="name:'sports'">内容</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--结束头部-->
+
+    <!--开始左侧菜单-->
+    <div data-options="region:'west',border:false,bodyCls:'theme-left-layout'" style="width:200px;">
+
+        <!--正常菜单-->
+        <div class="theme-left-normal">
+            <!--start class="easyui-layout"-->
+            <div class="easyui-layout" data-options="border:false,fit:true">
+                <!--start region:'north'-->
+                <div data-options="region:'north',border:false" style="height:100px;">
+                    <!--start theme-left-user-panel-->
+                    <div class="theme-left-user-panel">
+                        <dl>
+                            <dt>
+                                <img src="{$admin['head_img']? $admin['head_img'] : '__STATIC__/images/portrait86x86.png'}" width="43" height="43">
+                            </dt>
+                            <dd>
+                                <b class="badge-prompt">{$admin['nickname']} <!--<i class="badge color-important">10</i>--></b>
+                                <span>{$admin['username']}</span>
+                                <p>安全等级：<i class="text-success">高</i></p>
+                            </dd>
+
+                        </dl>
+                    </div>
+                    <!--end theme-left-user-panel-->
+                </div>
+                <!--end region:'north'-->
+
+                <!--start region:'center'-->
+                <div data-options="region:'center',border:false">
+                    <div class="easyui-accordion" id="luck-menu" data-options="border:false,fit:true">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--结束左侧菜单-->
+
+    <!--身体开始-->
+    <div data-options="region:'center'" style="padding:0 5px 5px 5px;">
+        <div class="easyui-tabs theme-tab-black-block theme-tab-unradius theme-tab-unborder theme-tab-line-bold" data-options="tabPosition:'top',fit:true" id="mainTabs">
+            <div title="控制台" style="padding:10px" data-options="href:'{:url('admin/index/info')}',">
+
+            </div>
+        </div>
+    </div>
+    <!--身体结束-->
+</div>
+
+<!-- 关闭菜单 -->
+<div id="rcmenu" class="easyui-menu" style="">
+    <div id="refreshcur" data-options="iconCls:'icon-reload'">刷新</div>
+    <div id="closecur" data-options="iconCls:'icon-cancel'">关闭</div>
+    <div id="closeother">关闭其他</div>
+    <div id="closeall">关闭全部</div>
+    <div class="menu-sep"></div>
+    <div id="closeright">关闭右侧标签页</div>
+    <div id="closeleft">关闭左侧标签页</div>
+</div>
+
+<div id="add-dialog"></div>
+<div id="pass-dialog"></div>
+<div id="chose-file"></div>
+<div id="lookup"></div>
+<div id="search-dialog"></div>
+</body>
+<script>
+    var MENU_URL="{:url('admin/category/menu')}";
+    var LOGOUT_URL="{:url('admin/login/logout')}";
+    var PASS_URL="{:url('admin/manager/pass')}";
+
+    var UPLOAD="__UPLOADS__";
+
+    //分页
+    var PAGE_SIZE=20;
+    var PAGE_LIST=[10,20,50,100];
+</script>
+<script src="__STATIC__/js/index.js"></script>
+<script src="__STATIC__/js/luck.js"></script>
+<script src="__STATIC__/plugin/justgage-1.2.2/raphael-2.1.4.min.js"></script>
+<script src="__STATIC__/plugin/justgage-1.2.2/justgage.js"></script>
+<script src="__STATIC__/plugin/Highcharts-5.0.0/js/highcharts.js"></script>
+</html>

@@ -1,0 +1,13 @@
+<div class="luck-col-12">
+    <div class="group-label {$form[type].extra_class|default=''}">
+        <span class="luck-block">{$form[type].title|htmlspecialchars}：</span>
+        {volist name="form[type].options" id="option"}
+        <input type="checkbox" name="{$form[type].name}[]" class="luck_check" id="{$form[type].name}{$i}" value="{$key}" {if condition="$key eq $form[type].value || (is_array($form[type].value) && in_array($key,$form[type].value))"}checked{/if} {$form[type].extra_attr|default=''}><label for="{$form[type].name}{$i}" style="padding:0 20px 0 5px;cursor: pointer;font-size: 14px;">{$option|htmlspecialchars}</label>
+        {/volist}
+    </div>
+    {notempty name="form[type].tips"}
+    <div class="group-label">
+        <div class="font-orange">提示：{$form[type].tips}</div>
+    </div>
+    {/notempty}
+</div>

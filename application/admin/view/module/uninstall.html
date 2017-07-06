@@ -1,0 +1,25 @@
+<form id="form-add" method="post" class="luck-from">
+    <div class="group-label">
+        <span >是否清除数据：</span>
+    </div>
+    <div class="group-label">
+        <input type="radio" name="clear" id="clear1" value="0" checked><label for="clear1" style="padding:0 20px 0 5px;cursor: pointer;font-size: 14px;">否</label>
+        <input type="radio" name="clear" id="clear2" value="1"><label for="clear2" style="padding:0 20px 0 5px;cursor: pointer;font-size: 14px;">是</label>
+    </div>
+    <div class="alert-red">
+        选择“是”，将删除数据库中的数据表
+    </div>
+</form>
+
+
+<script>
+    $(function(){
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    })
+</script>
+
+

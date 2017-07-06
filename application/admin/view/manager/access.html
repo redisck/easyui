@@ -1,0 +1,24 @@
+<form id="form-edit" method="post" class="luck-from">
+    <input type="hidden" name="uid" value="{$data['id']}">
+    <div class="group-label">
+        <span class="luck-block">用户名：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" readonly="readonly" value="{$data['username']}" data-options="required:'true'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">授权：</span>
+        <input type="text" class="easyui-textbox w350" name="group_id[]" id="group_id" data-options="editable:false">
+    </div>
+</form>
+
+<script>
+$("#group_id").combobox({
+    url:"{:url('admin/manager/group')}",
+    valueField:'id',
+    textField:'title',
+    queryParams: {
+        id:{$data['id']},
+    },
+    multiple:true,
+    panelHeight:'auto'
+});
+</script>

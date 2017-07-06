@@ -1,0 +1,104 @@
+<form id="form-add" method="post" class="luck-from">
+    <h4>模块依赖检查</h4>
+    {empty name="need_module"}
+    <div class="alert-blue">无需依赖其他模块</div>
+    {else/}
+    <table class="table table-celled">
+        <thead>
+        <tr>
+            <th>模块</th>
+            <th>唯一标识</th>
+            <th style="width: 100px;">当前版本</th>
+            <th style="width: 100px;">所需版本</th>
+            <th class="text-center" style="width: 100px;">检查结果</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="need_module" id="vo"}
+        <tr>
+            <td>{$vo.module}</td>
+            <td><a href="http://www.luck48.com" class="font-green" target="_blank" data-toggle="tooltip" title="到商城查看该模块">{$vo.identifier}</a></td>
+            <td>{$vo.version}</td>
+            <td>{$vo.version_need}</td>
+            <td class="text-center">
+                {$vo.result}
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    {/empty}
+    <h4>插件依赖检查</h4>
+    {empty name="need_plugin"}
+    <div class="alert-blue">无需依赖其他插件</div>
+    {else/}
+    <table class="table table-celled">
+        <thead>
+        <tr>
+            <th>插件</th>
+            <th>唯一标识</th>
+            <th style="width: 100px;">当前版本</th>
+            <th style="width: 100px;">所需版本</th>
+            <th class="text-center" style="width: 100px;">检查结果</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="need_plugin" id="vo"}
+        <tr>
+            <td>{$vo.plugin}</td>
+            <td><a href="http://www.luck48.com" class="font-green" target="_blank" data-toggle="tooltip" title="到商城查看该插件">{$vo.identifier}</a></td>
+            <td>{$vo.version}</td>
+            <td>{$vo.version_need}</td>
+            <td class="text-center">
+                {$vo.result}
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    {/empty}
+
+    <h4>数据表检查</h4>
+    {empty name="table_check"}
+    <div class="alert-blue">该模块不需要数据表</div>
+    {else/}
+    <table class="table table-celled">
+        <thead>
+        <tr>
+            <th>数据表</th>
+            <th class="text-center" style="width: 100px;">检查结果</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="table_check" id="vo"}
+        <tr>
+            <td>{$vo.table}</td>
+            <td class="text-center">
+                {$vo.result}
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    {/empty}
+    <div class="group-label">
+        <span >是否清除旧数据：</span>
+    </div>
+    <div class="group-label">
+        <input type="radio" name="clear" id="clear1" value="0" checked><label for="clear1" style="padding:0 20px 0 5px;cursor: pointer;font-size: 14px;">否</label>
+        <input type="radio" name="clear" id="clear2" value="1"><label for="clear2" style="padding:0 20px 0 5px;cursor: pointer;font-size: 14px;">是</label>
+    </div>
+</form>
+
+
+<script>
+    $(function(){
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    })
+</script>
+
+

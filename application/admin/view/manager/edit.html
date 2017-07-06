@@ -1,0 +1,67 @@
+<form id="form-add" method="post" class="luck-from">
+    <input type="hidden" name="id" value="{$data['id']}">
+    <div class="group-label">
+        <span class="luck-block">用户名：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" name="username" readonly="readonly" value="{$data['username']}" data-options="required:'true'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">密码：</span>
+        <input type="password" class="easyui-validatebox easyui-textbox w350" name="password" data-options="validType:'length[6,20]'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">昵称：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" name="nickname" value="{$data['nickname']}" data-options="required:'true'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">头像设置：</span>
+        <a class="easyui-linkbutton button-default" id="choseOne">选择上传</a>
+        <div id="progress" class="easyui-progressbar progressbar-blue progressbar-animation" data-options="value:0" style="width:100%; height: 22px;display: none;">
+        </div>
+        <div class="luck-upbox" style="margin:10px 0 0 80px;{if condition='!$data["head_img"]'}display: none;{/if}">
+            <div class="luck-closeupload"><i class="fa fa-close"></i></div>
+            <div id="luck-heading">
+                {if condition="$data['head_img']"}
+                <img src="{$data['head_img']}" class='luck-avatar' />
+                {/if}
+            </div>
+        </div>
+        {if condition="$data['head_img']"}
+        <input type="hidden" name="head_img" value="{$data['head_img']}">
+        {else /}
+        <input type="hidden" name="head_img">
+        {/if}
+    </div>
+    <div class="group-label">
+        <span class="luck-block">邮箱：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" value="{$data['email']}" name="email" data-options="validType:'email'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">是否启用：</span>
+        <input class='easyui-switchbutton' name="status" data-options="onText:'开启',offText:'禁用',value:'1'"  {if condition="$data['status'] eq 1"}checked{/if}>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">备注：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" value="{$data['remark']}" data-options="multiline:true,height:'80px'" name="remark">
+    </div>
+</form>
+
+<script src="__STATIC__/plugin/plupload-2.3.1/js/plupload.full.min.js"></script>
+<script src="__STATIC__/js/luck-plupload.js"></script>
+
+<script>
+    var URL_NANE="avatar";  //二级文件夹名
+    var UPLOAD_URL="{:url('admin/all/upload',['name'=>'avatar'])}";
+    var MULT=false; //多文件
+
+    var flash_swf_url='__STATIC__/plugin/plupload-2.3.1/js/Moxie.swf';
+    var silverlight_xap_url='__STATIC__/plugin/plupload-2.3.1/js/Moxie.xap';
+
+    $('.luck-closeupload i').on('click',function(){
+        $("#luck-heading").html("");
+        $("input[name='head_img']").val("");
+    });
+
+    luck.uploadOne();
+</script>
+
+

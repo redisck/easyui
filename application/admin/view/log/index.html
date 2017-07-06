@@ -1,0 +1,72 @@
+<table id="dg-log" style="height:100%;width: 100%;">
+    <thead>
+    <tr>
+        <th data-options="field:'ck',checkbox:true"></th>
+        <th data-options="field:'id',sortable:true">ID</th>
+        <th data-options="field:'username'">用户名</th>
+        <th data-options="field:'module'">模块</th>
+        <th data-options="field:'modulename'">操作名</th>
+        <th data-options="field:'description'">描述</th>
+        <th data-options="field:'time',align:'center',formatter:luck.datagrid_time,sortable:true">时间</th>
+        <th data-options="field:'ip',align:'center',formatter:luck.datagrid_ip">IP</th>
+    </tr>
+    </thead>
+</table>
+
+<div id="tb-log">
+    <table cellpadding="0" cellspacing="0" style="width:100%">
+        <tr class="clearfix">
+            <td class="luck-tool-button luck-left">
+                <a href="#" class="easyui-linkbutton button-black" plain="true" onclick="log_tool.refresh();"><i class="fa fa-refresh fa-lg"></i> 刷新</a>
+            </td>
+            <td class="luck-tool-button luck-text-right luck-right">
+                用户名: <input class="easyui-textbox" name="title" style="width:200px">
+                <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="log_tool.search();">Search</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    var dg_log=$('#dg-log');
+    $(function(){
+        dg_log.datagrid({
+            url:"{:url('admin/log/index')}",
+            method:'post',
+            idField:'id',
+            nowrap:'false',
+            fitColumns:true,
+            rownumbers:true,
+            sortName:'time',	//选择字段排序
+            sortOrder:'Desc',	//默认排序的方式 asc/desc
+            pagination:true,	//开启分页
+            pageSize:PAGE_SIZE,	//默认分页数
+            pageList:PAGE_LIST,	//分页模式
+            selectOnCheck:true,
+            checkOnSelect:true,	//点击行选中
+            singleSelect:false,	//多选
+            loadMsg:'加载中...',
+            striped:true,	//添加斑马线
+            toolbar: '#tb-log',
+            emptyMsg:'<span class="font-pink">没有记录</span>',
+        });
+
+    });
+    /*function rowoperate(val,row,index){
+        return '<a href="#" class="easyui-linkbutton button-red luck-row-small" plain="true" onclick="log_tool.remove('+row.id+');"><i class="fa fa-close fa-lg"></i> 删除</a>';
+    }*/
+    var log_tool={
+        refresh:function(){
+            dg_log.datagrid('reload');
+            dg_log.datagrid('clearSelections');
+        },
+        search:function(){
+            dg_log.datagrid('load',{
+                'search_username': $('input[name=title]').val()
+            });
+        },
+        clearselect:function(){
+            dg_log.datagrid('clearSelections');
+        }
+    }
+</script>

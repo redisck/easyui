@@ -1,0 +1,47 @@
+
+<form id="form-add" method="post" class="luck-from">
+    <input type="hidden" name="id" value="{$data['id']}">
+    <div class="group-label">
+        <span class="luck-block">规则名：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" name="title" value="{$data['title']}" data-options="required:'true'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">路径：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" name="name" value="{$data['name']}">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">上级规则：</span>
+        <input type="text" class="easyui-combotree easyui-textbox w350" name="pid" id="pid" value="{$data['pid']}">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">是否启用：</span>
+        <input class='easyui-switchbutton' name="status" data-options="onText:'开启',offText:'禁用',value:'1'" {if condition="$data['status'] eq 1"}checked{/if}>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">是否显示：</span>
+        <input class='easyui-switchbutton' name="showed" data-options="onText:'显示',offText:'隐藏',value:'1'" {if condition="$data['showed'] eq 1"}checked{/if}>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">系统菜单：</span>
+        <input class='easyui-switchbutton' name="system_menu" data-options="onText:'是',offText:'否',value:'1'"  {if condition="$data['system_menu'] eq 1"}checked{/if}>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">排序：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" name="sort" value="{$data['sort']}">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">附加条件：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" data-options="multiline:true,height:'100px'" name="condition" value="{$data['condition']}">
+    </div>
+</form>
+
+
+<script>
+    $('#pid').combotree({
+        url: '{:url("admin/rule/ruletree")}',
+        required: true,
+    });
+
+</script>
+
+

@@ -1,0 +1,84 @@
+<link rel="stylesheet" type="text/css" href="__STATIC__/plugin/webuploader-0.1.5/webuploader.css">
+
+<form id="form-add" method="post" class="luck-from">
+    <input type="hidden" name="id" value="{$data['id']}">
+    <div class="group-label">
+        <span class="luck-block">用户名：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" name="username" readonly="readonly" value="{$data['username']}" data-options="required:'true'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">密码：</span>
+        <input type="password" class="easyui-validatebox easyui-textbox w350" name="password" data-options="validType:'length[6,20]'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">昵称：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" name="nickname" value="{$data['nickname']}" data-options="required:'true'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">头像设置：</span>
+        <a class="easyui-linkbutton button-default" id="chose">选择上传</a>
+        <div id="luck-avatar" style="padding:10px 0 0 80px;">
+            {if condition="$data['head_img']"}
+            <img src="{$data['head_img']}" class='luck-avatar' />
+            {/if}
+        </div>
+
+        {if condition="$data['head_img']"}
+        <input type="hidden" name="head_img" value="{$data['head_img']}">
+        {else /}
+        <input type="hidden" name="head_img">
+        {/if}
+    </div>
+    <div class="group-label">
+        <span class="luck-block">邮箱：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" value="{$data['email']}" name="email" data-options="validType:'email'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">是否启用：</span>
+        <input class='easyui-switchbutton' name="status" data-options="onText:'开启',offText:'禁用',value:'1'"  {if condition="$data['status'] eq 1"}checked{/if}>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">备注：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" value="{$data['remark']}" data-options="multiline:true,height:'80px'" name="remark">
+    </div>
+</form>
+
+<link rel="stylesheet" type="text/css" href="__STATIC__/plugin/webuploader-0.1.5/webuploader.css">
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/upload.css">
+<script src="__STATIC__/plugin/webuploader-0.1.5/webuploader.js"></script>
+
+<script>
+    $('#chose').on('click',function(){
+        $('#chose-file').dialog({
+            title: '文件上传',
+            width: 680,
+            height:570,
+            closed: false,
+            cache: false,
+            cls:'theme-panel-deepblue luck-dialog-buttons',
+            modal: true,
+            href:"{:url('admin/all/chosefile',['num'=>0,'ext'=>'image','name'=>'avatar'])}",
+            buttons:[{
+                cls:'easyui-linkbutton button-blue',
+                iconCls:'fa fa-check fa-lg',
+                text:'选择',
+                handler:function(){
+                    var son=$("input[name='avatar']").val();
+                    var img="<img src='"+son+"' class='luck-avatar' />";
+                    $("input[name='head_img']").val(son);
+                    $(window.parent.$("#luck-avatar").html(img));
+                    //$("#luck-avatar").html(son);
+                    $('#chose-file').dialog('close');
+                }
+            },{
+                iconCls:'fa fa-close fa-lg',
+                text:'关闭',
+                handler:function(){
+                    $('#chose-file').dialog('close');
+                }
+            }],
+        })
+    });
+</script>
+
+

@@ -1,0 +1,44 @@
+<form id="form-add" method="post" class="luck-from">
+    <div class="group-label">
+        <span class="luck-block">规则名：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" name="title" data-options="required:'true'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">路径：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" name="name" data-options="">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">上级规则：</span>
+        <input type="text" class="easyui-combotree easyui-textbox w350" name="pid" id="pid">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">是否启用：</span>
+        <input class='easyui-switchbutton' name="status" data-options="onText:'开启',offText:'禁用',value:'1'" checked>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">是否显示：</span>
+        <input class='easyui-switchbutton' name="showed" data-options="onText:'显示',offText:'隐藏',value:'1'" checked>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">系统菜单：</span>
+        <input class='easyui-switchbutton' name="system_menu" data-options="onText:'是',offText:'否',value:'1'">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">排序：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" name="sort" value="0">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">附加条件：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" data-options="multiline:true,height:'100px'" name="condition">
+    </div>
+</form>
+
+
+<script>
+    $('#pid').combotree({
+        url: '{:url("admin/rule/ruletree")}',
+        required: true
+    });
+</script>
+
+

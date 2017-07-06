@@ -1,0 +1,43 @@
+<div class="luck-col-12 easyui-tabs theme-tab-blue-block" id="group-tab" data-options="tabPosition:'top'">
+    {volist name="form.options" id="items" key="items_key"}
+    <div title="{$key|htmlspecialchars}">
+        {volist name="items" id="form_group"}
+            {switch name="form_group['type']"}
+            {case value="text"}
+            {// 文本 }
+            {include file="../application/common/builder/form/items/text.html" type='_group' /}
+            {/case}
+            {case value="radio"}
+            {// 单选 }
+            {include file="../application/common/builder/form/items/radio.html" type='_group' /}
+            {/case}
+            {case value="textarea"}
+            {// 多行文本 }
+            {include file="../application/common/builder/form/items/textarea.html" type='_group' /}
+            {/case}
+            {case value="checkbox"}
+            {// 多选 }
+            {include file="../application/common/builder/form/items/checkbox.html" type='_group' /}
+            {/case}
+            {case value="select"}
+            {// 下拉 }
+            {include file="../application/common/builder/form/items/select.html" type='_group' /}
+            {/case}
+            {case value="array"}
+            {// 数组 }
+            {include file="../application/common/builder/form/items/array.html" type='_group' /}
+            {/case}
+            {case value="hidden"}
+            {// 隐藏表单 }
+            {include file="../application/common/builder/form/items/hidden.html" type='_group' /}
+            {/case}
+            {/switch}
+        {/volist}
+    </div>
+    {/volist}
+</div>
+<script>
+    $('#group-tab').tabs({
+    　　height: "auto"
+    });
+</script>

@@ -1,0 +1,105 @@
+{notempty name="page_tips"}
+<div class="alert alert-{$tips_type} alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <p>{$page_tips}</p>
+</div>
+{/notempty}
+<form id="form-{$form_id}" method="post" class="luck-from">
+    <div class="luck-row">
+        {empty name="form_items"}
+        <div class="alert-success">
+            <div class="alert-close">×</div>
+            <div class="alert-icons"></div>
+            <b>Warning!</b> 暂无数据.
+        </div>
+        {else /}
+        {volist name="form_items" id="form"}
+        {switch name="form.type"}
+            {case value="text"}
+            {// 文本 }
+            {include file="../application/common/builder/form/items/text.html" type='' /}
+            {/case}
+            {case value="radio"}
+            {// 单选 }
+            {include file="../application/common/builder/form/items/radio.html" type='' /}
+            {/case}
+            {case value="textarea"}
+            {// 多行文本 }
+            {include file="../application/common/builder/form/items/textarea.html" type='' /}
+            {/case}
+            {case value="checkbox"}
+            {// 多选 }
+            {include file="../application/common/builder/form/items/checkbox.html" type='' /}
+            {/case}
+            {case value="select"}
+            {// 下拉 }
+            {include file="../application/common/builder/form/items/select.html" type='' /}
+            {/case}
+            {case value="array"}
+            {// 数组 }
+            {include file="../application/common/builder/form/items/array.html" type='' /}
+            {/case}
+            {case value="hidden"}
+            {// 隐藏表单 }
+            {include file="../application/common/builder/form/items/hidden.html" type='' /}
+            {/case}
+            {case value="group"}
+            {// 分组 }
+            {include file="../application/common/builder/form/items/group.html" type='' /}
+            {/case}
+        {/switch}
+        {/volist}
+        {/empty}
+    </div>
+</form>
+{notempty name="form_submit"}
+<div class="system_button" style="margin:0 20px;">
+    <a class="easyui-linkbutton button-blue l-btn l-btn-small" onclick="{$form_id}_submit()">{$form_submit}</a>
+</div>
+{/notempty}
+<script type="text/javascript">
+    $(function(){
+        $('input.luck_check').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    })
+    {notempty name="form_submit"}
+    function {$form_id}_submit(){
+        $.messager.confirm('确定操作', '确定要执行该操作吗？', function (flag) {
+            if (flag) {
+                $("#form-{$form_id}").form('submit', {
+                    url: "{$post_url}",
+                    onSubmit: function () {
+                        var isValid = $(this).form('validate');
+                        isValid ? $.messager.progress() : "";
+                        return isValid;
+                    },
+                    success: function (data) {
+                        $.messager.progress('close');
+                        try {
+                            if (typeof data == 'string') {
+                                var data = $.parseJSON(data);
+                            }
+                            if (data.status == 200) {
+                                $.messager.show({
+                                    title: '消息提示',
+                                    msg: data.message,
+                                    timeout: 5000,
+                                    showType: 'slide'
+                                });
+                            } else {
+                                $.messager.alert('错误', data.message, 'error');
+                            }
+                        }
+                        catch (e) {
+                            $.messager.alert('提示', '网络连接错误,请重试!', 'warning');
+                        }
+                    }
+                })
+            }
+        })
+    }
+    {/notempty}
+</script>

@@ -1,0 +1,46 @@
+<link rel="stylesheet" type="text/css" href="__STATIC__/plugin/webuploader-0.1.5/webuploader.css">
+
+<form id="form-add" method="post" class="luck-from">
+    <div class="group-label">
+        <span class="luck-block">角色名：</span>
+        <input type="text" class="easyui-validatebox easyui-textbox w350" name="title" data-options="required:'true'" id="tt5">
+    </div>
+    <div class="group-label">
+        <span class="luck-block">是否启用：</span>
+        <input class='easyui-switchbutton' name="status" data-options="onText:'开启',offText:'禁用',value:'1'" checked>
+    </div>
+    <div class="group-label">
+        <span class="luck-block">规则：</span>
+        <input type="text" class="easyui-textbox w350" id="rules" name="rules" prompt="点击图标带回规则" iconWidth="24" data-options="editable:false,icons:[{iconCls:'searchbox-button'}]">
+    </div>
+</form>
+
+<script>
+    $("#rules").textbox({onClickIcon:function(){
+        $('#lookup').dialog({
+            title: '选择规则',
+            width: 350,
+            height:550,
+            closed: false,
+            cache: false,
+            cls:'theme-panel-deepblue luck-dialog-buttons',
+            modal: true,
+            href:"{:url('admin/group/rule')}",
+            buttons:[{
+                cls:'easyui-linkbutton button-blue',
+                iconCls:'fa fa-check fa-lg',
+                text:'选择',
+                handler:function(){
+                }
+            },{
+                iconCls:'fa fa-close fa-lg',
+                text:'关闭',
+                handler:function(){
+                    $('#lookup').dialog('close');
+                }
+            }],
+        })
+    }})
+</script>
+
+

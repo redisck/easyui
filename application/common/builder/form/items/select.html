@@ -1,0 +1,15 @@
+<div class="luck-col-12">
+    <div class="group-label {$form[type].extra_class|default=''}">
+        <span class="luck-block">{$form[type].title|htmlspecialchars}：</span>
+        <select id="cc" class="easyui-combobox" style="width:70%" name="{$form[type].name}" data-options="editable:false">
+            {foreach name="form[type].options" item="v" key="k"}
+            <option value="{$k}" {if condition="$k eq $form[type].value"}selected{/if}>{$v}</option>
+            {/foreach}
+        </select>
+    </div>
+    {notempty name="form[type].tips"}
+    <div class="group-label">
+        <div class="font-orange">提示：{$form[type].tips}</div>
+    </div>
+    {/notempty}
+</div>

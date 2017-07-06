@@ -1,0 +1,305 @@
+<table id="dg-{$vid}" style="height:100%;width: 100%;">
+    <thead>
+    <tr>
+        <th data-options="field:'title'">名称</th>
+        <th data-options="field:'author'">作者</th>
+        <th data-options="field:'version'">版本</th>
+        <th data-options="field:'description',align:'left',width:100">描述</th>
+        <th data-options="field:'status',align:'center',formatter:datagrid_status_{$vid}">状态</th>
+        <th data-options="field:'operate',align:'center',formatter:rowoperate">操作</th>
+    </tr>
+    </thead>
+</table>
+
+<div id="tb-{$vid}">
+    <table cellpadding="0" cellspacing="0" style="width:100%">
+        <tr class="clearfix">
+            <td class="luck-tool-button luck-left">
+                <a href="#" class="easyui-linkbutton button-teal" plain="true" onclick="{$vid}_tool.local(this);">{$tab_list['local']['title']}</a>
+                <a href="#" class="easyui-linkbutton" plain="true" onclick="{$vid}_tool.online(this);">{$tab_list['online']['title']}</a>
+            </td>
+            <td class="luck-tool-button luck-left">
+                <div class="datagrid-btn-separator"></div>
+            </td>
+            <td class="luck-tool-button luck-left">
+                <a href="#" class="easyui-linkbutton button-black" plain="true" onclick="{$vid}_tool.refresh();"><i class="fa fa-refresh fa-lg"></i> 刷新</a>
+            </td>
+            <td class="luck-tool-button luck-text-right luck-right" id="inputname">
+                {volist name="status" id="v"}
+                    {switch name='i'}
+                    {case value='1'}<a href="#" class="easyui-linkbutton button-line-black" data-value="" onclick="{$vid}_tool.status(this);">{$key}({$v['num']})</a> {/case}
+                    {case value='2'}<a href="#" class="easyui-linkbutton button-line-green" data-value="1" onclick="{$vid}_tool.status(this);">{$key}({$v['num']})</a> {/case}
+                    {case value='3'}<a href="#" class="easyui-linkbutton button-line-yellow" data-value="0" onclick="{$vid}_tool.status(this);">{$key}({$v['num']})</a> {/case}
+                    {case value='4'}<a href="#" class="easyui-linkbutton button-line-blue" data-value="-1" onclick="{$vid}_tool.status(this);">{$key}({$v['num']})</a> {/case}
+                    {case value='5'}<a href="#" class="easyui-linkbutton button-line-red" data-value="-2" onclick="{$vid}_tool.status(this);">{$key}({$v['num']})</a> {/case}
+                    {/switch}
+                {/volist}
+                搜索: <input class="easyui-textbox" name="name" id="{$vid}_title" style="width:200px"  prompt='请输入标识/名称/作者'>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="{$vid}_tool.search();">Search</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    var dg_{$vid}=$('#dg-{$vid}');
+    $(function(){
+        dg_{$vid}.datagrid({
+            url:"{:url('admin/plugin/index')}",
+            method:'post',
+            idField:'title',
+            nowrap:'false',
+            fitColumns:true,
+            rownumbers:true,
+            sortName:'title',	//选择字段排序
+            sortOrder:'asc',	//默认排序的方式 asc/desc
+            pagination:false,	//开启分页
+            pageSize:PAGE_SIZE,	//默认分页数
+            pageList:PAGE_LIST,	//分页模式
+            selectOnCheck:true,
+            checkOnSelect:true,	//点击行选中
+            singleSelect:true,	//多选
+            loadMsg:'加载中...',
+            striped:true,	//添加斑马线
+            toolbar: '#tb-{$vid}',
+            emptyMsg:'<span class="font-pink">没有记录</span>',
+        });
+
+    });
+    function datagrid_status_{$vid}(value,row,index){
+        if(value==0){
+            return '<a href="#" class="easyui-linkbutton button-red luck-row-small" plain="true" data-id="'+row.id+'" data-name="'+row.name+'" data-value="1" onclick="{$vid}_tool.edit(this);">禁用中</a>';
+        }else if(value==1){
+            return '<a href="#" class="easyui-linkbutton button-green luck-row-small" plain="true" data-id="'+row.id+'" data-name="'+row.name+'" data-value="0" onclick="{$vid}_tool.edit(this);">启用中</a>';
+        }else if(value==-1){
+            return '';
+        }else{
+            return value;
+        }
+    }
+    function rowoperate(val,row,index){
+
+        if(row.status!=0 && row.status!=-1 && row.status!=1){
+            return ' <span class="easyui-linkbutton button-line-red button-sm l-btn luck-pd5">不可操作</span>';
+        }else if(row.status==-1){
+            return '<a href="#" class="easyui-linkbutton button-teal luck-row-small" plain="true" data-name="'+row.name+'" onclick="{$vid}_tool.install(this);"><i class="fa fa-download fa-lg"></i> 安装</a>';
+        }else{
+            var hta='<a href="#" class="easyui-linkbutton button-red luck-row-small" plain="true" data-name="'+row.name+'" onclick="{$vid}_tool.uninstall(this);"><i class="fa fa-close fa-lg"></i> 卸载</a> ' +
+                    '<a href="#" class="easyui-linkbutton button-teal luck-row-small" plain="true" data-name="'+row.name+'" onclick="{$vid}_tool.config(this);"><i class="fa fa-edit fa-lg"></i> 设置</a> ';
+            if(row.admin!= 0){
+                hta+='<a href="#" class="easyui-linkbutton button-blue luck-row-small" plain="true" data-name="'+row.name+'" onclick="{$vid}_tool.manage(this);"><i class="fa fa-cog fa-lg"></i> 管理</a>';
+            }
+            return hta;
+        }
+    }
+    var {$vid}_tool={
+        edit:function(obj){
+            var confirmmsg='您要修改所选的{$vname}的状态吗？';
+            $.messager.confirm('确定操作', confirmmsg, function (flag) {
+                if (flag) {
+                    if($(obj).length>0){
+                        {$vid}_tool.clearselect();
+                    }
+                    var rows=dg_{$vid}.datagrid('getSelections');
+                    if($(obj).length==1){
+                        var id=$(obj).attr('data-id');
+                        $.ajax({
+                            type:"post",
+                            url:'{:url("admin/plugin/edit")}',
+                            data: {
+                                status:$(obj).attr('data-value'),
+                                name:$(obj).attr('data-name'),
+                                id:$(obj).attr('data-id'),
+                            },
+                            beforeSend : function () {
+                                dg_{$vid}.datagrid('loading');
+                            },
+                            success : function (data, response, status) {
+                                luck.success2(data,dg_{$vid});
+                            },
+                            complete:function(){
+                                dg_{$vid}.datagrid('loaded');
+                            },
+                            error : function(){
+
+                            }
+                        });
+                    }else{
+                        $.messager.alert('警告', '修改{$vname}状态只能操作一条,且最多只能操作一条!!', 'warning');
+                    }
+                }
+            })
+        },
+        install:function(obj){
+            var confirmmsg='您要安装所选的{$vname}吗？';
+            $.messager.confirm('确定操作', confirmmsg, function (flag) {
+                if (flag) {
+                    if($(obj).length>0){
+                        {$vid}_tool.clearselect();
+                    }
+
+                    if($(obj).length==1){
+                        var name=$(obj).attr('data-name');
+                        $.ajax({
+                            type:"post",
+                            url:'{:url("admin/plugin/install")}?name='+name,
+                            beforeSend : function () {
+                                dg_{$vid}.datagrid('loading');
+                            },
+                            success : function (data, response, status) {
+                                luck.success2(data,dg_{$vid});
+                            },
+                            complete:function(){
+                                dg_{$vid}.datagrid('loaded');
+                            },
+                            error : function(){
+
+                            }
+                        });
+
+                    }else{
+                        $.messager.alert('警告', '安装{$vname}只能操作一条,且最多只能操作一条!!', 'warning');
+                    }
+                }
+            });
+        },
+        uninstall:function(obj){
+            var confirmmsg='您要卸载所选的{$vname}吗？';
+            $.messager.confirm('确定操作', confirmmsg, function (flag) {
+                if (flag) {
+                    if($(obj).length>0){
+                        {$vid}_tool.clearselect();
+                    }
+
+                    if($(obj).length==1){
+                        var name=$(obj).attr('data-name');
+                        $.ajax({
+                            type:"post",
+                            url:'{:url("admin/plugin/uninstall")}?name='+name,
+                            beforeSend : function () {
+                                dg_{$vid}.datagrid('loading');
+                            },
+                            success : function (data, response, status) {
+                                luck.success2(data,dg_{$vid});
+                            },
+                            complete:function(){
+                                dg_{$vid}.datagrid('loaded');
+                            },
+                            error : function(){
+
+                            }
+                        });
+
+                    }else{
+                        $.messager.alert('警告', '卸载{$vname}只能操作一条,且最多只能操作一条!!', 'warning');
+                    }
+                }
+            });
+        },
+        config:function(obj){
+            if($(obj).length>0){
+                {$vid}_tool.clearselect();
+            }
+            if($(obj).length==1){
+                var name=$(obj).attr('data-name');
+                $('#add-dialog').dialog({
+                    title: '设置{$vname}',
+                    closed: false,
+                    cache: false,
+                    cls:'theme-panel-deepblue luck-dialog-buttons',
+                    modal: true,
+                    href:"{:url('admin/plugin/config')}?name="+name,
+
+                    buttons:[{
+                        cls:'easyui-linkbutton button-blue',
+                        iconCls:'fa fa-check fa-lg',
+                        text:'保存',
+                        handler:function(){
+                            {$vid}_tool.edit_config(name);
+                        }
+                    },{
+                        iconCls:'fa fa-close fa-lg',
+                        text:'关闭',
+                        handler:function(){
+                            luck.closeDialog();
+                        }
+                    }],
+                    fit: true,
+                    onBeforeOpen:function(){
+                        $('#add-dialog').window('resize',{left:0,top:0});
+                    }
+                });
+            }else{
+                $.messager.alert('警告', '设置{$vname}需要操作一条,且最多只能操作一条!!', 'warning');
+            }
+        },
+        manage:function(obj){
+            if($(obj).length>0){
+                {$vid}_tool.clearselect();
+            }
+            if($(obj).length==1){
+                var name=$(obj).attr('data-name');
+                $.ajax({
+                    type:"post",
+                    url:'{:url("admin/plugin/manage")}?name='+name,
+                    beforeSend : function () {
+                        dg_{$vid}.datagrid('loading');
+                    },
+                    success : function (data, response, status) {
+                        luck.success2(data,dg_{$vid});
+                    },
+                    complete:function(){
+                        dg_{$vid}.datagrid('loaded');
+                    },
+                    error : function(){
+
+                    }
+                });
+            }else{
+                $.messager.alert('警告', '设置{$vname}需要操作一条,且最多只能操作一条!!', 'warning');
+            }
+        },
+        refresh:function(){
+            dg_{$vid}.datagrid('reload');
+            dg_{$vid}.datagrid('clearSelections');
+            //dg.datagrid('load');
+        },
+        edit_config:function(name){
+            $("#form-add").form('submit',{
+                url:"{:url('admin/plugin/config')}?name="+name,
+                onSubmit:function(){
+                    var isValid = $(this).form('validate');
+                    isValid?$.messager.progress():"";
+                    return isValid;
+                },
+                success:function(data){
+                    luck.success(data,dg_{$vid});
+                }
+            })
+        },
+        status:function(obj){
+            dg_{$vid}.datagrid('load',{
+                'search_status': $(obj).attr('data-value')
+            });
+            $('#{$vid}_title').textbox('setValue',"");
+        },
+        search:function(){
+            dg_{$vid}.datagrid('load',{
+                'search_name': $('#{$vid}_title').val()
+            });
+        },
+        local:function(obj){
+            dg_{$vid}.datagrid('load',"{$tab_list['local']['url']}");
+            $(obj).addClass('button-teal').siblings().removeClass('button-teal');
+            $('#inputname').show();
+        },
+        online:function(obj){
+            dg_{$vid}.datagrid('load',"{$tab_list['online']['url']}");
+            $(obj).addClass('button-teal').siblings().removeClass('button-teal');
+            $('#inputname').hide();
+        },
+        clearselect:function(){
+            dg_{$vid}.datagrid('clearSelections');
+        }
+    }
+</script>
